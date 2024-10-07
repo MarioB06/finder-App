@@ -24,19 +24,19 @@
 
 ## Verzeichnisstruktur
 
-finder-app/
-│
-├── src/
-│   ├── components/
-│   ├── assets/
-│   ├── screens/
-│   └── navigation/
-├── finder-backend/
-│   ├── models/
-│   ├── routes/
-│   └── controllers/
-├── .env
-└── README.md
+finder-app/<br>
+│<br>
+├── src/<br>
+│   ├── components/<br>
+│   ├── assets/<br>
+│   ├── screens/<br>
+│   └── navigation/<br>
+├── finder-backend/<br>
+│   ├── models/<br>
+│   ├── routes/<br>
+│   └── controllers/<br>
+├── .env<br>
+└── README.md<br>
 
 ## Setup
 
