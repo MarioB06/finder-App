@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
-import { magnifyingGlassSvg } from '../assets/svg/MagnifyingGlassSvg';
+import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
 
 export default function LandingPage({ navigation }) {
   return (
