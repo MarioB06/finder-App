@@ -17,9 +17,7 @@ router.post('/register', async (req, res) => {
       res.status(400).send('Wrong password confirmation');
     }
   });
-  
 
-// Login-Route
 // Login-Route
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
-import { magnifyingGlassSvg } from '../assets/svg/MagnifyingGlassSvg'; // SVG import
+import { magnifyingGlassSvg } from '../assets/svg/MagnifyingGlassSvg';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
