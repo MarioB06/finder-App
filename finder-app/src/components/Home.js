@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://192.168.1.113:3000/api/items');
+        const response = await axios.get('http://127.0.0.1:8000/api/items');
         setItems(response.data);
         setFilteredItems(response.data);
       } catch (error) {

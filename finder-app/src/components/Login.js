@@ -13,7 +13,7 @@ export default function Login({ navigation }) {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post('http://192.168.1.113:3000/api/auth/login', { email, password });
+      const response = await axios.post('http://127.0.0.1:8000/api/auth/login', { email, password });
       await AsyncStorage.setItem('token', response.data.token);
       console.log('Login erfolgreich');
       navigation.navigate('Home');

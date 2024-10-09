@@ -12,13 +12,17 @@ export default function Register({ navigation }) {
 
   const registerUser = async () => {
     try {
-      const response = await axios.post('http://192.168.1.113:3000/api/auth/register', { email, password, passwordConfirm: confirmPassword });
+      const response = await axios.post('http://127.0.0.1:8000/api/auth/register', { email, password, passwordConfirm: confirmPassword });
       console.log(response.data);
       navigation.navigate('Login');
     } catch (error) {
-      console.error(error.response.data);
-      console.error("Error");
+      if (error.response) {
+        console.error(error.response.data);
+      } else {
+        console.error('Error:', error.message);
+      }
     }
+    
   };
 
   return (
