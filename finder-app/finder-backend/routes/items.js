@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Item = require('../models/Item');
 const { check, validationResult } = require('express-validator');
+const verifyToken = require('../middleware/auth');
 
 // API zum Hinzufügen eines Items
 router.post(
-    '/add',
+    '/add',verifyToken,
     [
         check('title').not().isEmpty().withMessage('Title is required'),
         check('description').not().isEmpty().withMessage('Description is required'),
@@ -38,8 +39,10 @@ router.post(
         }
     });
 
-    router.get('/', async (req, res) => {
+    router.get('/',verifyToken, async (req, res) => {
         try {
+            console.log("dasdad");
+            
             const items = await Item.find({ isFound: false }); // Filter für isFound auf false
             res.json(items);
         } catch (err) {
