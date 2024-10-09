@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
     }
   
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    const timestamp = new Date(); // Aktuellen Zeitstempel erfassen
+    const timestamp = new Date();
   
     res.json({ token, timestamp });
   });

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, Image, FlatList } from 'react-native';
+import { View, TextInput, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const defaultImage = require('../../assets/default-image.png'); // Standardbild
+const defaultImage = require('../../assets/default-image.png');
 
 const Home = () => {
   const [searchLocation, setSearchLocation] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [token, setToken] = useState(null);
+  
   // Daten aus der Datenbank laden
   useEffect(() => {
     const fetchItems = async () => {
@@ -22,6 +25,18 @@ const Home = () => {
       }
     };
     fetchItems();
+
+    // Token aus AsyncStorage abrufen
+    const getToken = async () => {
+      try {        
+        const userToken = await AsyncStorage.getItem('token');
+        console.log(userToken);
+        setToken(userToken);
+      } catch (error) {
+        console.error('Fehler beim Abrufen des Tokens', error);
+      }
+    };
+    getToken();
   }, []);
 
   // Live-Ortsfilter
@@ -32,8 +47,20 @@ const Home = () => {
     setFilteredItems(result);
   }, [searchLocation, items]);
 
+  // Toggle dropdown visibility
+  const toggleFilterDropdown = () => {
+    setFilterVisible(!filterVisible);
+  };
+
   return (
-    <View style={tw`flex-1 p-4`}>
+    <View style={tw`flex-1 p-4 mt-6`}>
+      <View style={tw`flex-1 p-4`}>
+      {/* Zeige den Token oben an */}
+      <Text style={tw`text-center mb-4`}>
+        Aktuelles Token: {token ? token : 'Kein Token gefunden'}
+      </Text>
+      {/* Andere Inhalte der Seite */}
+    </View>
       {/* Suchfeld für Ort */}
       <TextInput
         style={tw`border p-3 rounded-full text-center mb-4 bg-gray-100`}
@@ -42,10 +69,25 @@ const Home = () => {
         onChangeText={setSearchLocation}
       />
 
+      {/* Filter Button */}
+      <TouchableOpacity
+        style={tw`border p-3 rounded-full bg-gray-100 mb-4`}
+        onPress={toggleFilterDropdown}
+      >
+        <Text style={tw`text-center`}>Filter</Text>
+      </TouchableOpacity>
+
+      {/* Filter Dropdown */}
+      {filterVisible && (
+        <View style={tw`border p-4 bg-gray-100 rounded-lg mb-4`}>
+          <Text>Filteroptionen hier hinzufügen</Text>
+          {/* Weitere Filteroptionen */}
+        </View>
+      )}
+
       {/* Liste der gefilterten Gegenstände */}
       <FlatList
         data={filteredItems}
-        key={(items.length > 0).toString()}  // Die Liste wird neu gerendert, wenn Items sich ändern
         keyExtractor={(item) => item._id}
         numColumns={2}
         columnWrapperStyle={tw`justify-between`}
