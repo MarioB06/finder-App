@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
 import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
+const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Überprüfe Token bei Laden der Komponente
+  useEffect(() => {
+    const navigateIfAuthenticated = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          const response = await axios.get(`${API_BASE_URL}/api/auth/check`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.status === 200) {
+            navigation.navigate('Home');
+          }
+        }
+      } catch (error) {
+        console.error('Authentifizierung fehlgeschlagen', error);
+      }
+    };
+    
+    navigateIfAuthenticated();
+  }, []);
+
   const loginUser = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+        email,
+        password,
+      });
+
       await AsyncStorage.setItem('token', response.data.token);
-      console.log('Login erfolgreich');
+      // await AsyncStorage.setItem('userID', response.data.userID);
+      
       navigation.navigate('Home');
     } catch (error) {
       const errorMessage = error.response ? error.response.data : 'Error.';

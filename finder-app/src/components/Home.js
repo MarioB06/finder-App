@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
+import { SvgXml } from 'react-native-svg';
+import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
+const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
 const defaultImage = require('../../assets/default-image.png');
+import { FlatList, Image } from 'react-native';
 
 const Home = () => {
   const [searchLocation, setSearchLocation] = useState('');
@@ -12,55 +17,44 @@ const Home = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false);
   const [token, setToken] = useState(null);
-  
+
   // Daten aus der Datenbank laden
   useEffect(() => {
-    const fetchItems = async () => {
+    const getItems = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/items');
-        setItems(response.data);
-        setFilteredItems(response.data);
-      } catch (error) {
-        console.error('Fehler beim Laden der Daten', error);
-      }
-    };
-    fetchItems();
-
-    // Token aus AsyncStorage abrufen
-    const getToken = async () => {
-      try {        
         const userToken = await AsyncStorage.getItem('token');
-        console.log(userToken);
-        setToken(userToken);
+        if (userToken) {
+          setToken(userToken);
+          const response = await axios.get(`${API_BASE_URL}/api/items`, {
+            params: { token: userToken },
+          });
+          setItems(response.data);
+          setFilteredItems(response.data);
+        }
       } catch (error) {
-        console.error('Fehler beim Abrufen des Tokens', error);
+        console.error('Fehler beim Abrufen der Daten', error);
       }
     };
-    getToken();
+    getItems();
   }, []);
 
-  // Live-Ortsfilter
+  // Funktion zur Filterung von Items nach Standort
   useEffect(() => {
-    const result = items.filter(item =>
+    const filtered = items.filter((item) =>
       item.location.toLowerCase().includes(searchLocation.toLowerCase())
     );
-    setFilteredItems(result);
+    setFilteredItems(filtered);
   }, [searchLocation, items]);
-
-  // Toggle dropdown visibility
-  const toggleFilterDropdown = () => {
-    setFilterVisible(!filterVisible);
-  };
 
   return (
     <View style={tw`flex-1 p-4 mt-6`}>
       <View style={tw`flex-1 p-4`}>
-      {/* Zeige den Token oben an */}
-      <Text style={tw`text-center mb-4`}>
-        Aktuelles Token: {token ? token : 'Kein Token gefunden'}
-      </Text>
-      {/* Andere Inhalte der Seite */}
-    </View>
+        {/* Zeige den Token oben an */}
+        <Text style={tw`text-center mb-4`}>
+          Aktuelles Token: {token ? token : 'Kein Token gefunden'}
+        </Text>
+        {/* Andere Inhalte der Seite */}
+      </View>
       {/* Suchfeld für Ort */}
       <TextInput
         style={tw`border p-3 rounded-full text-center mb-4 bg-gray-100`}
@@ -69,26 +63,10 @@ const Home = () => {
         onChangeText={setSearchLocation}
       />
 
-      {/* Filter Button */}
-      <TouchableOpacity
-        style={tw`border p-3 rounded-full bg-gray-100 mb-4`}
-        onPress={toggleFilterDropdown}
-      >
-        <Text style={tw`text-center`}>Filter</Text>
-      </TouchableOpacity>
-
-      {/* Filter Dropdown */}
-      {filterVisible && (
-        <View style={tw`border p-4 bg-gray-100 rounded-lg mb-4`}>
-          <Text>Filteroptionen hier hinzufügen</Text>
-          {/* Weitere Filteroptionen */}
-        </View>
-      )}
-
       {/* Liste der gefilterten Gegenstände */}
       <FlatList
         data={filteredItems}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.id.toString()} // Verwende `id` anstelle von `_id`
         numColumns={2}
         columnWrapperStyle={tw`justify-between`}
         renderItem={({ item }) => (
