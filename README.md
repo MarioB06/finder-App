@@ -18,67 +18,24 @@
   - React Native
   - Tailwind CSS
 - **Backend**:
-  - Express.js
+  - Laravel (PHP)
 - **Datenbank**:
-  - MongoDB Atlas
+  - MySQL
 
 ## Verzeichnisstruktur
 
 finder-app/<br>
 │<br>
+├── assets/<br>
 ├── src/<br>
 │   ├── components/<br>
-│   ├── assets/<br>
 │   ├── screens/<br>
 │   └── navigation/<br>
-├── finder-backend/<br>
-│   ├── models/<br>
+├── backend-api/<br>
+│   ├── app/<br>
 │   ├── routes/<br>
+│   ├── database/<br>
+│   ├── config/<br>
 │   └── controllers/<br>
 ├── .env<br>
 └── README.md<br>
-
-## Setup
-
-### Voraussetzungen
-
-- Node.js und npm installiert
-- MongoDB Atlas Cluster eingerichtet
-
-### Lokales Setup
-
-1. Klone das Repository:
-
-   ```bash
-   git clone https://github.com/MarioB06/finder-App.git
-   cd finder-app
-   
-2. Installiere die Abhängigkeiten für das Frontend:
-
-   ```bash
-   cd finder-app
-   npm install
-
-
-3. Installiere die Abhängigkeiten für das Backend:
-
-   ```bash
-    cd finder-backend
-    npm install
-
-
-4. Erstelle eine .env-Datei und füge die Umgebungsvariablen hinzu:
-
-   ```bash
-    MONGO_URI=<your-mongodb-uri>
-    JWT_SECRET=<your-jwt-secret>
-
-
-5. Starte den Server und die App:
-
-   ```bash
-    node index.js
-    expo start
-
-
-6. Öffne die App mit dem Expo-Client auf deinem iOS- oder Android-Gerät.
