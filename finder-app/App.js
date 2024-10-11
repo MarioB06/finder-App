@@ -33,8 +33,8 @@ export default function App() {
         }}
       >
         <Stack.Screen name="LandingPage" component={LandingPage} options={{ gestureEnabled: false }}/>
-        <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: false }}/>
-        <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} options={{ gestureEnabled: false }}/>
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
       </Stack.Navigator>
