@@ -49,7 +49,7 @@ const ItemDetail = ({ route, navigation }) => {
   const logout = async () => {
     setIsOptionsMenuVisible(false);
     await AsyncStorage.removeItem('token');
-    navigation.navigate('Login');
+    navigation.navigate('LandingPage');
   };
 
   return (
