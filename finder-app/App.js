@@ -6,8 +6,10 @@ import LandingPage from './src/components/LandingPage';
 import Register from './src/components/Register';
 import Login from './src/components/Login';
 import Home from './src/components/Home';
+import ItemDetail from './src/components/ItemDetail';
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
   const [initialRoute, setInitialRoute] = useState('LandingPage');
@@ -25,11 +27,16 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialRoute}>
-        <Stack.Screen name="LandingPage" component={LandingPage} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
+      <Stack.Navigator initialRouteName={initialRoute}
+       screenOptions={{
+          headerShown: false,  // Versteckt die Standard-Header und Swiping-Funktion
+        }}
+      >
+        <Stack.Screen name="LandingPage" component={LandingPage} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="Register" component={Register} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="Login" component={Login} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="Home" component={Home} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="ItemDetail" component={ItemDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

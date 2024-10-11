@@ -11,11 +11,10 @@ const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 const defaultImage = require('../../assets/default-image.png');
 import { FlatList, Image } from 'react-native';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const [searchLocation, setSearchLocation] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [filterVisible, setFilterVisible] = useState(false);
   const [token, setToken] = useState(null);
 
   // Daten aus der Datenbank laden
@@ -47,14 +46,15 @@ const Home = () => {
   }, [searchLocation, items]);
 
   return (
-    <View style={tw`flex-1 p-4 mt-6`}>
-      <View style={tw`flex-1 p-4`}>
-        {/* Zeige den Token oben an */}
-        <Text style={tw`text-center mb-4`}>
-          Aktuelles Token: {token ? token : 'Kein Token gefunden'}
-        </Text>
-        {/* Andere Inhalte der Seite */}
+    <View style={tw`flex-1 p-4`}>
+      {/* Navbar */}
+      <View style={tw`flex-row justify-between items-center mb-10 mt-8`}>
+        <TouchableOpacity style={tw`flex-row items-center`} onPress={() => navigation.navigate('Home')}>
+          <SvgXml xml={magnifyingGlassSvg} width="40" height="40" />
+          <Text style={tw`ml-3 text-blue-500 text-3xl font-bold`}>Finder</Text>
+        </TouchableOpacity>
       </View>
+
       {/* Suchfeld für Ort */}
       <TextInput
         style={tw`border p-3 rounded-full text-center mb-4 bg-gray-100`}
@@ -70,16 +70,18 @@ const Home = () => {
         numColumns={2}
         columnWrapperStyle={tw`justify-between`}
         renderItem={({ item }) => (
-          <View style={tw`border p-3 rounded-lg mb-4 w-[48%]`}>
+          <TouchableOpacity
+            style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
+            onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+          >
             <Image
               source={item.image ? { uri: item.image } : defaultImage}
-              style={tw`w-full h-24 rounded-lg mb-2`}
-              resizeMode="contain"
+              style={tw`w-full h-32 rounded-2xl mb-2`}
+              resizeMode="cover"
             />
             <Text style={tw`text-center`}>{item.title}</Text>
-            <Text style={tw`text-center`}>{item.reward} CHF</Text>
-            <Text style={tw`text-center`}>{item.location}</Text>
-          </View>
+            <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
+          </TouchableOpacity>
         )}
       />
     </View>
