@@ -7,6 +7,7 @@ import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
+import Navbar from './includes/Navbar';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
 const defaultImage = require('../../assets/default-image.png');
@@ -54,57 +55,52 @@ const Home = ({ navigation }) => {
     }
   };
 
+  const logout = async () => {
+    setIsOptionsMenuVisible(false);
+    await AsyncStorage.removeItem('token');
+    navigation.navigate('Login');
+    
+  };
   return (
     <TouchableWithoutFeedback onPress={handleOutsideClick}>
       <View style={[tw`flex-1 p-4 relative`]}>
         {/* Navbar */}
-        <View style={tw`flex-row justify-between items-center mb-10 mt-8`}>
-          <TouchableOpacity style={tw`flex-row items-center`} onPress={() => navigation.navigate('Home')}>
-            <SvgXml xml={magnifyingGlassSvg} width="40" height="40" />
-            <Text style={tw`ml-3 text-blue-500 text-3xl font-bold`}>Finder</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsOptionsMenuVisible(!isOptionsMenuVisible)}>
-            <Text style={tw`text-blue-500 text-2xl font-bold`}>⋮</Text>
-          </TouchableOpacity>
-        </View>
+        <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
         {/* Options Menu Modal */}
-        <Modal
-          visible={isOptionsMenuVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={() => setIsOptionsMenuVisible(false)}
-        >
-          <Pressable style={tw`flex-1 bg-black bg-opacity-0`} onPress={() => setIsOptionsMenuVisible(false)}>
-            <View style={tw`absolute top-0 right-0 bottom-0 w-3/4 bg-white p-6 pt-15`}>
-              <Text style={tw`text-lg font-bold mb-4`}>V 01.0.1</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Chats</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Profil</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={tw`text-lg text-red-600`}>Konto löschen</Text>
-              </TouchableOpacity>
-            </View>
-          </Pressable>
-        </Modal>
+          <Modal
+            visible={isOptionsMenuVisible}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setIsOptionsMenuVisible(false)}
+          >
+            <Pressable style={tw`flex-1 bg-black bg-opacity-0`} onPress={() => setIsOptionsMenuVisible(false)}>
+              <View style={tw`absolute top-0 right-0 bottom-0 w-3/4 bg-white p-6 pt-15`}>
+                <Text style={tw`text-lg font-bold mb-4`}>V 01.0.1</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Chats</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Profil</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => logout()} style={tw`mb-4`}>
+                  <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
+                </TouchableOpacity>
+              </View>
+            </Pressable>
+          </Modal>
 
         {/* Suchfeld für Ort */}
         <TextInput
