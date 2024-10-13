@@ -13,7 +13,7 @@ const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 const defaultImage = require('../../assets/default-image.png');
 import { FlatList, Image } from 'react-native';
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   const [searchLocation, setSearchLocation] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -22,32 +22,36 @@ const Home = ({ navigation }) => {
   const [isOptionsMenuVisible, setIsOptionsMenuVisible] = useState(false);
 
   // Daten aus der Datenbank laden
-  useEffect(() => {
-    const getItems = async () => {
-      try {
-        const userToken = await AsyncStorage.getItem('token');
-        if (userToken) {
-          setToken(userToken);
-          const response = await axios.get(`${API_BASE_URL}/api/items`, {
-            params: { token: userToken },
-          });
-          setItems(response.data);
-          setFilteredItems(response.data);
-        }
-      } catch (error) {
-        console.error('Fehler beim Abrufen der Daten', error);
+  const getItems = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('token');
+      if (userToken) {
+        setToken(userToken);
+        const response = await axios.get(`${API_BASE_URL}/api/items`, {
+          params: { token: userToken },
+        });
+        setItems(response.data);
+        setFilteredItems(response.data);
       }
-    };
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Daten', error);
+    }
+  };
+
+  useEffect(() => {
     getItems();
   }, []);
 
   // Funktion zur Filterung von Items nach Standort
   useEffect(() => {
-    const filtered = items.filter((item) =>
-      item.location.toLowerCase().includes(searchLocation.toLowerCase())
-    );
-    setFilteredItems(filtered);
-  }, [searchLocation, items]);
+    const focusListener = navigation.addListener('focus', () => {
+      if (route.params?.refresh) {
+        getItems();
+      }
+    });
+
+    return focusListener;
+  }, [navigation, route]);
 
   const handleOutsideClick = () => {
     if (isOptionsMenuVisible) {
@@ -59,8 +63,8 @@ const Home = ({ navigation }) => {
     setIsOptionsMenuVisible(false);
     await AsyncStorage.removeItem('token');
     navigation.navigate('LandingPage');
-    
   };
+
   return (
     <TouchableWithoutFeedback onPress={handleOutsideClick}>
       <View style={[tw`flex-1 p-4 relative`]}>
@@ -68,46 +72,49 @@ const Home = ({ navigation }) => {
         <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
         {/* Options Menu Modal */}
-          <Modal
-            visible={isOptionsMenuVisible}
-            transparent={true}
-            animationType="slide"
-            onRequestClose={() => setIsOptionsMenuVisible(false)}
-          >
-            <Pressable style={tw`flex-1 bg-black bg-opacity-0`} onPress={() => setIsOptionsMenuVisible(false)}>
-              <View style={tw`absolute top-0 right-0 bottom-0 w-3/4 bg-white p-6 pt-15`}>
-                <Text style={tw`text-lg font-bold mb-4`}>V 01.0.1</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Chats</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Profil</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => logout()} style={tw`mb-4`}>
-                  <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
-                </TouchableOpacity>
-              </View>
-            </Pressable>
-          </Modal>
+        <Modal
+          visible={isOptionsMenuVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setIsOptionsMenuVisible(false)}
+        >
+          <Pressable style={tw`flex-1 bg-black bg-opacity-0`} onPress={() => setIsOptionsMenuVisible(false)}>
+            <View style={tw`absolute top-0 right-0 bottom-0 w-3/4 bg-white p-6 pt-15`}>
+              <Text style={tw`text-lg font-bold mb-4`}>V 01.0.1</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('AddItems')} style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Chats</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Profil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => logout()} style={tw`mb-4`}>
+                <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Modal>
 
         {/* Suchfeld für Ort */}
         <TextInput
           style={tw`border p-3 rounded-full text-center mb-4 bg-gray-100`}
           placeholder="Ort suchen"
           value={searchLocation}
-          onChangeText={setSearchLocation}
+          onChangeText={(text) => {
+            setSearchLocation(text);
+            setFilteredItems(items.filter(item => item.location.toLowerCase().includes(text.toLowerCase())));
+          }}
         />
 
         {/* Liste der gefilterten Gegenstände */}

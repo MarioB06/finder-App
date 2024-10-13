@@ -14,9 +14,22 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $item = Item::create($request->all());
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'locationDescription' => 'nullable|string|max:255',
+            'reward' => 'required|numeric',
+        ]);
+    
+        $validated['image'] = $request->has('image') ? $validated['image'] : "";
+    
+        $item = Item::create($validated);
+    
         return response()->json($item, 201);
     }
+    
+
 
     public function show($id)
     {

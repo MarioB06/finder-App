@@ -70,8 +70,8 @@ const ItemDetail = ({ route, navigation }) => {
               <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
                 <Text style={tw`text-xl text-gray-800`}>Home</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('AddItems')} style={tw`mb-4`}>
+              <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
               </TouchableOpacity>
               <TouchableOpacity style={tw`mb-4`}>
                 <Text style={tw`text-xl text-gray-800`}>Chats</Text>

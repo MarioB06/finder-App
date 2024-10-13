@@ -13,7 +13,7 @@ import { FlatList, Image } from 'react-native';
 
 const NavBar = ({ navigation, setIsOptionsMenuVisible }) => {
   return (
-    <View style={tw`flex-row justify-between items-center mb-10 mt-8`}>
+    <View style={tw`flex-row justify-between items-center mb-10 mt-15`}>
       <TouchableOpacity style={tw`flex-row items-center`} onPress={() => navigation.navigate('Home')}>
         <SvgXml xml={magnifyingGlassSvg} width="40" height="40" />
         <Text style={tw`ml-3 text-blue-500 text-3xl font-bold`}>Finder</Text>

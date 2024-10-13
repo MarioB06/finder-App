@@ -7,6 +7,7 @@ import Register from './src/components/Register';
 import Login from './src/components/Login';
 import Home from './src/components/Home';
 import ItemDetail from './src/components/ItemDetail';
+import AddItems from './src/components/addItems';
 
 const Stack = createStackNavigator();
 
@@ -29,7 +30,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}
        screenOptions={{
-          headerShown: false,  // Versteckt die Standard-Header und Swiping-Funktion
+          headerShown: false,
         }}
       >
         <Stack.Screen name="LandingPage" component={LandingPage} options={{ gestureEnabled: false }}/>
@@ -37,6 +38,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} options={{ gestureEnabled: false }}/>
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
+        <Stack.Screen name="AddItems" component={AddItems} />
       </Stack.Navigator>
     </NavigationContainer>
   );
