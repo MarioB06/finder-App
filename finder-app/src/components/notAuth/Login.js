@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
-import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
+import { magnifyingGlassSvg } from '../../../assets/svg/MagnifyingGlassSvg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
-export default function Register({ navigation }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  
+
+  // Überprüfe Token bei Laden der Komponente
   useEffect(() => {
     const navigateIfAuthenticated = async () => {
       try {
@@ -33,20 +33,21 @@ export default function Register({ navigation }) {
     navigateIfAuthenticated();
   }, []);
 
-  const registerUser = async () => {
+  const loginUser = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
-          email,
-          password,
-          password_confirmation: confirmPassword
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
+        email,
+        password,
       });
-      navigation.navigate('Login');
-  } catch (error) {
+
+      await AsyncStorage.setItem('token', response.data.token);
+      // await AsyncStorage.setItem('userID', response.data.userID);
+      
+      navigation.navigate('Home');
+    } catch (error) {
       const errorMessage = error.response ? error.response.data : 'Error.';
       console.error(errorMessage);
-  }
-  
-    
+    }
   };
 
   return (
@@ -74,23 +75,19 @@ export default function Register({ navigation }) {
         onChangeText={setPassword}
       />
 
-      {/* Confirm Password Input */}
-      <TextInput
-        style={tw`border border-gray-300 rounded-full w-72 p-3 mb-4 bg-gray-100`}
-        placeholder="Passwort bestätigen"
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-      />
-
-      {/* Register Button */}
-      <TouchableOpacity onPress={registerUser} style={tw`bg-blue-500 rounded-full p-4 w-60 mb-4`}>
-        <Text style={tw`text-white text-center`}>Registrieren</Text>
+      {/* Login Button */}
+      <TouchableOpacity onPress={loginUser} style={tw`bg-blue-500 rounded-full p-4 w-60 mb-4`}>
+        <Text style={tw`text-white text-center`}>Anmelden</Text>
       </TouchableOpacity>
 
-      {/* Link zum Login */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={tw`text-gray-500 underline`}>Bereits ein Konto? Anmelden</Text>
+      {/* Passwort vergessen */}
+      <TouchableOpacity onPress={() => alert('Passwort vergessen gedrückt')}>
+        <Text style={tw`text-gray-500 mb-4`}>Passwort vergessen?</Text>
+      </TouchableOpacity>
+
+      {/* Noch keinen Konto */}
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={tw`text-gray-500 underline`}>Noch keinen Konto?</Text>
       </TouchableOpacity>
     </View>
   );

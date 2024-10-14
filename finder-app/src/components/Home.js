@@ -3,15 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
-import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
+import { FlatList, Image } from 'react-native';
 import axios from 'axios';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
-import Navbar from './includes/Navbar';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
+
+import Navbar from './includes/Navbar';
+import OptionsMenu from './includes/OptionsMenu';
+import { handleOutsideClick, logout } from './includes/sharedFunctions';
+
+import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
 const defaultImage = require('../../assets/default-image.png');
-import { FlatList, Image } from 'react-native';
+
 
 const Home = ({ navigation, route }) => {
   const [searchLocation, setSearchLocation] = useState('');
@@ -25,6 +32,7 @@ const Home = ({ navigation, route }) => {
   const getItems = async () => {
     try {
       const userToken = await AsyncStorage.getItem('token');
+      console.log(userToken);
       if (userToken) {
         setToken(userToken);
         const response = await axios.get(`${API_BASE_URL}/api/items`, {
@@ -53,58 +61,22 @@ const Home = ({ navigation, route }) => {
     return focusListener;
   }, [navigation, route]);
 
-  const handleOutsideClick = () => {
-    if (isOptionsMenuVisible) {
-      setIsOptionsMenuVisible(false);
-    }
-  };
-
-  const logout = async () => {
-    setIsOptionsMenuVisible(false);
-    await AsyncStorage.removeItem('token');
-    navigation.navigate('LandingPage');
-  };
-
   return (
     <TouchableWithoutFeedback onPress={handleOutsideClick}>
       <View style={[tw`flex-1 p-4 relative`]}>
-        {/* Navbar */}
-        <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-        {/* Options Menu Modal */}
-        <Modal
-          visible={isOptionsMenuVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={() => setIsOptionsMenuVisible(false)}
-        >
-          <Pressable style={tw`flex-1 bg-black bg-opacity-0`} onPress={() => setIsOptionsMenuVisible(false)}>
-            <View style={tw`absolute top-0 right-0 bottom-0 w-3/4 bg-white p-6 pt-15`}>
-              <Text style={tw`text-lg font-bold mb-4`}>V 01.0.1</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('AddItems')} style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Gegenstand eintragen</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Chats</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Profil</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => logout()} style={tw`mb-4`}>
-                <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
-              </TouchableOpacity>
-            </View>
-          </Pressable>
-        </Modal>
+        {/*Menu include*/}
+
+          {/* Navbar */}
+          <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
+
+          {/* Options Menu Modal */}
+          <OptionsMenu
+            isVisible={isOptionsMenuVisible}
+            setIsOptionsMenuVisible={setIsOptionsMenuVisible}
+            navigation={navigation}
+            logout={logout}
+          />
 
         {/* Suchfeld für Ort */}
         <TextInput

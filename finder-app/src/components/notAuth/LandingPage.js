@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
-import { magnifyingGlassSvg } from '../../assets/svg/MagnifyingGlassSvg';
+import { magnifyingGlassSvg } from '../../../assets/svg/MagnifyingGlassSvg';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';

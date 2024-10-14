@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Laravel\Sanctum\PersonalAccessToken;
+
 
 class ItemController extends Controller
 {
@@ -21,7 +24,12 @@ class ItemController extends Controller
             'locationDescription' => 'nullable|string|max:255',
             'reward' => 'required|numeric',
         ]);
-    
+
+        $tokenString = $request->query ('token');
+        $token = PersonalAccessToken::findToken($tokenString);
+        $user = $token->tokenable;
+        $validated['userID'] = $user->id;
+        
         $validated['image'] = $request->has('image') ? $validated['image'] : "";
     
         $item = Item::create($validated);

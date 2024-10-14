@@ -1,8 +1,11 @@
+//nav bar
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
 import { magnifyingGlassSvg } from '../../../assets/svg/MagnifyingGlassSvg';
+import { HamburgerMenuSvg } from '../../../assets/svg/HamburgerMenuSvg.js';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
@@ -19,7 +22,7 @@ const NavBar = ({ navigation, setIsOptionsMenuVisible }) => {
         <Text style={tw`ml-3 text-blue-500 text-3xl font-bold`}>Finder</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setIsOptionsMenuVisible(prev => !prev)}>
-        <Text style={tw`text-blue-500 text-2xl font-bold`}>⋮</Text>
+        <SvgXml xml={HamburgerMenuSvg} width="40" height="40" />
       </TouchableOpacity>
     </View>
   );
