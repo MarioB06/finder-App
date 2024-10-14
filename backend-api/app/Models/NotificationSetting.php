@@ -4,25 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Schema;
 
-class Item extends Model
+class NotificationSetting extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'image',
-        'title',
-        'description',
-        'location',
-        'location_description',
-        'reward'
-    ];
-
-    protected $attributes = [
-        'image' => null,
+        'email',
+        'push_notification',
+        'found_items',
+        'lost_items',
+        'chat_notifications',
+        'from',
+        'to'
     ];
 
     public function user()
@@ -30,4 +25,3 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 }
-

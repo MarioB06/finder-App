@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('image')->nullable();
             $table->string('title');
             $table->text('description');
             $table->string('location');
-            $table->string('location_description')->nullable();
+            $table->string('locationDescription')->nullable();
             $table->decimal('reward', 8, 2);
             $table->timestamps();
         });

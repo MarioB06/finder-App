@@ -22,16 +22,16 @@ const OptionsMenu = ({ isVisible, setIsOptionsMenuVisible, navigation, logout })
         <TouchableOpacity style={tw`mb-4`}>
           <Text style={tw`text-xl text-gray-800`}>Chats</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={tw`mb-4`}>
           <Text style={tw`text-xl text-gray-800`}>Profil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => navigation.navigate('NotificationSettings')} style={tw`mb-4`}>
           <Text style={tw`text-xl text-gray-800`}>Benachrichtigungen</Text>
         </TouchableOpacity>
         <TouchableOpacity style={tw`mb-4`}>
           <Text style={tw`text-xl text-gray-800`}>Über die App</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => logout()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => logout(navigation)} style={tw`mb-4`}>
           <Text style={tw`text-xl text-gray-800`}>Abmelden</Text>
         </TouchableOpacity>
       </View>

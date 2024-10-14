@@ -6,6 +6,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Http\Controllers\Controller;
 
 
 class ItemController extends Controller
@@ -27,8 +28,8 @@ class ItemController extends Controller
 
         $tokenString = $request->query ('token');
         $token = PersonalAccessToken::findToken($tokenString);
-        $user = $token->tokenable;
-        $validated['userID'] = $user->id;
+        $user = $token->tokenable;  
+        $validated['user_id'] = $user->id;
         
         $validated['image'] = $request->has('image') ? $validated['image'] : "";
     
@@ -37,7 +38,6 @@ class ItemController extends Controller
         return response()->json($item, 201);
     }
     
-
 
     public function show($id)
     {
@@ -48,6 +48,19 @@ class ItemController extends Controller
             return response()->json(['error' => 'Item not found'], 404);
         }
     }
+
+    public function showMy(Request $request)
+    {
+        $user = Controller::getUserByToken($request['token']);
+    
+        if ($user) {
+            $items = Item::where('user_id', $user->id)->get();
+            return response()->json($items, 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
+    
 
     public function update(Request $request, $id)
     {

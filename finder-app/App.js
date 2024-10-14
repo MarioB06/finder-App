@@ -8,6 +8,8 @@ import Login from './src/components/notAuth/Login';
 import Home from './src/components/Home';
 import ItemDetail from './src/components/ItemDetail';
 import AddItems from './src/components/addItems';
+import Profile from './src/components/Profile';
+import NotificationSettings from './src/components/notificationSettings';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +41,8 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} options={{ gestureEnabled: false }}/>
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
         <Stack.Screen name="AddItems" component={AddItems} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
       </Stack.Navigator>
     </NavigationContainer>
   );

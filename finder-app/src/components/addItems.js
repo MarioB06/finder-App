@@ -99,38 +99,38 @@ const AddItem = ({ navigation }) => {
             {successMessage && <Text style={tw`text-green-500 text-center mb-4`}>{successMessage}</Text>}
 
             {/* Bild hochladen (wird in einem zukünftigen Schritt hinzugefügt) */}
-            <TouchableOpacity style={tw`bg-gray-100 p-4 rounded-full flex-row justify-center items-center mb-4`}>
+            <TouchableOpacity style={tw`bg-gray-300 p-4 rounded-full flex-row items-center mb-4`}>
                 <SvgXml xml={magnifyingGlassSvg} width="24" height="24" />
                 <Text style={tw`ml-2`}>Bild hochladen</Text>
             </TouchableOpacity>
 
             {/* Formularfelder */}
             <TextInput
-                style={tw`bg-gray-100 p-4 rounded-full mb-4`}
+                style={tw`bg-gray-300 p-4 rounded-full mb-4`}
                 placeholder="Titel"
                 value={title}
                 onChangeText={setTitle}
             />
             <TextInput
-                style={tw`bg-gray-100 p-4 rounded-full mb-4`}
+                style={tw`bg-gray-300 p-4 rounded-full mb-4`}
                 placeholder="Beschreibung"
                 value={description}
                 onChangeText={setDescription}
             />
             <TextInput
-                style={tw`bg-gray-100 p-4 rounded-full mb-4`}
+                style={tw`bg-gray-300 p-4 rounded-full mb-4`}
                 placeholder="Standort"
                 value={location}
                 onChangeText={setLocation}
             />
             <TextInput
-                style={tw`bg-gray-100 p-4 rounded-full mb-4`}
+                style={tw`bg-gray-300 p-4 rounded-full mb-4`}
                 placeholder="Standort Beschreibung"
                 value={locationDescription}
                 onChangeText={setLocationDescription}
             />
             <TextInput
-                style={tw`bg-gray-100 p-4 rounded-full mb-4`}
+                style={tw`bg-gray-300 p-4 rounded-full mb-4`}
                 placeholder="Finderlohn"
                 value={reward}
                 onChangeText={setReward}
