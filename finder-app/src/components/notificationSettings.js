@@ -12,6 +12,7 @@ import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
 
+import BottomNavBar from './includes/BottomNavBar';
 import Navbar from './includes/Navbar';
 import OptionsMenu from './includes/OptionsMenu';
 import { handleOutsideClick, logout } from './includes/sharedFunctions';
@@ -99,19 +100,9 @@ const NotificationSettings = ({ navigation, route }) => {
                 {/* Navbar */}
                 <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-                {/* Options Menu Modal */}
-                <OptionsMenu
-                    isVisible={isOptionsMenuVisible}
-                    setIsOptionsMenuVisible={setIsOptionsMenuVisible}
-                    navigation={navigation}
-                    logout={logout}
-                />
-
                 {/* Main Content */}
-                <ScrollView style={tw`p-4`}>
-                    {message ? (
-                        <Text style={tw`text-center mt-4 text-lg`}>{message}</Text>
-                    ) : null}
+                <ScrollView style={tw`flex-1 p-4`} showsVerticalScrollIndicator={false}>
+
                     <Text style={tw`text-2xl font-bold mb-6`}>Benachrichtigungen</Text>
                     <View style={tw`mb-4`}>
                         <Text style={tw`text-lg mb-2`}>E-Mail</Text>
@@ -159,7 +150,11 @@ const NotificationSettings = ({ navigation, route }) => {
                             disabled={isSaving}
                         />
                     </View>
+
                 </ScrollView>
+
+                {/* Bottom Navigation Bar */}
+                <BottomNavBar navigation={navigation} />
             </View>
         </TouchableWithoutFeedback>
 

@@ -31,18 +31,21 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}
-       screenOptions={{
+        screenOptions={{
           headerShown: false,
+          gestureEnabled: false, 
+          animationEnabled: false
         }}
       >
-        <Stack.Screen name="LandingPage" component={LandingPage} options={{ gestureEnabled: false }}/>
-        <Stack.Screen name="Register" component={Register}/>
+        <Stack.Screen name="LandingPage" component={LandingPage}  />
+        <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} options={{ gestureEnabled: false }}/>
+        <Stack.Screen name="Home" component={Home}  />
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
         <Stack.Screen name="AddItems" component={AddItems} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="NotificationSettings" component={NotificationSettings} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

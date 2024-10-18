@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
-
+import BottomNavBar from './includes/BottomNavBar';
 import Navbar from './includes/Navbar';
 import OptionsMenu from './includes/OptionsMenu';
 import { handleOutsideClick, logout } from './includes/sharedFunctions';
@@ -62,56 +62,46 @@ const Home = ({ navigation, route }) => {
   }, [navigation, route]);
 
   return (
-    <TouchableWithoutFeedback onPress={handleOutsideClick}>
-      <View style={[tw`flex-1 p-4 relative`]}>
+    <View style={[tw`flex-1 p-4 relative`]}>
 
-        {/*Menu include*/}
+      {/* Navbar */}
+      <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-        {/* Navbar */}
-        <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
+      {/* Suchfeld für Ort */}
+      <TextInput
+        style={tw`bg-gray-300 p-4 rounded-full mb-4`}
+        placeholder="Ort suchen"
+        value={searchLocation}
+        onChangeText={(text) => {
+          setSearchLocation(text);
+          setFilteredItems(items.filter(item => item.location.toLowerCase().includes(text.toLowerCase())));
+        }}
+      />
 
-        {/* Options Menu Modal */}
-        <OptionsMenu
-          isVisible={isOptionsMenuVisible}
-          setIsOptionsMenuVisible={setIsOptionsMenuVisible}
-          navigation={navigation}
-          logout={logout}
-        />
-
-        {/* Suchfeld für Ort */}
-        <TextInput
-          style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-          placeholder="Ort suchen"
-          value={searchLocation}
-          onChangeText={(text) => {
-            setSearchLocation(text);
-            setFilteredItems(items.filter(item => item.location.toLowerCase().includes(text.toLowerCase())));
-          }}
-        />
-
-        {/* Liste der gefilterten Gegenstände */}
-        <FlatList
-          data={filteredItems}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
-          columnWrapperStyle={tw`justify-between`}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={tw`border p-2 rounded-2xl mb-4 w-[48%] h-56`}
-              onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
-            >
-              <Image
-                source={item.image ? { uri: item.image } : defaultImage}
-                style={tw`w-full h-32 rounded-2xl mb-2`}
-                resizeMode="cover"
-              />
-              <Text style={tw`text-center`}>{item.title}</Text>
-              <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-    </TouchableWithoutFeedback>
+      {/* Liste der gefilterten Gegenstände */}
+      <FlatList
+        data={filteredItems}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
+        columnWrapperStyle={tw`justify-between`}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={tw`border p-2 rounded-2xl mb-4 w-[48%] h-56`}
+            onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+          >
+            <Image
+              source={item.image ? { uri: item.image } : defaultImage}
+              style={tw`w-full h-32 rounded-2xl mb-2`}
+              resizeMode="cover"
+            />
+            <Text style={tw`text-center`}>{item.title}</Text>
+            <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
+          </TouchableOpacity>
+        )}
+      />
+      {/* Bottom Navigation Bar */}
+      <BottomNavBar navigation={navigation} />
+    </View>
   );
 };
 

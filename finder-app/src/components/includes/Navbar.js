@@ -21,9 +21,6 @@ const NavBar = ({ navigation, setIsOptionsMenuVisible }) => {
         <SvgXml xml={magnifyingGlassSvg} width="40" height="40" />
         <Text style={tw`ml-3 text-blue-500 text-3xl font-bold`}>Finder</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setIsOptionsMenuVisible(prev => !prev)}>
-        <SvgXml xml={HamburgerMenuSvg} width="40" height="40" />
-      </TouchableOpacity>
     </View>
   );
 };

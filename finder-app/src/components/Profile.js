@@ -1,6 +1,6 @@
 //Profile
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
 import { FlatList, Image } from 'react-native';
@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_APP_API_HOST, REACT_APP_API_PORT } from '@env';
 const API_BASE_URL = `http://${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`;
 
+import BottomNavBar from './includes/BottomNavBar';
 import Navbar from './includes/Navbar';
 import OptionsMenu from './includes/OptionsMenu';
 import { handleOutsideClick, logout } from './includes/sharedFunctions';
@@ -88,78 +89,78 @@ const Profile = ({ navigation }) => {
 
     return (
         <View style={[tw`flex-1 p-4 relative`]}>
-            {/*Menu include*/}
 
             {/* Navbar */}
             <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-            {/* Options Menu Modal */}
-            <OptionsMenu
-                isVisible={isOptionsMenuVisible}
-                setIsOptionsMenuVisible={setIsOptionsMenuVisible}
-                navigation={navigation}
-                logout={logout}
-            />
+            <ScrollView style={tw`flex-1 p-4`} showsVerticalScrollIndicator={false}>
 
-            {/* Profil bearbeiten */}
-            <View style={tw`p-4`}>
-                <Text style={tw`text-xl font-bold mb-4`}>Profil bearbeiten</Text>
+                {/* Profil bearbeiten */}
+                <View>
+                    <Text style={tw`text-xl font-bold mb-4`}>Profil bearbeiten</Text>
 
-                <TextInput
-                    style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-                    placeholder="Benutzername"
-                    value={username}
-                    onChangeText={setUsername}
-                />
-                <TextInput
-                    style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-                    placeholder="E-Mail"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <TextInput
-                    style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-                    placeholder="Passwort"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-                <TextInput
-                    style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-                    placeholder="Neues Passwort"
-                    onChangeText={newPassword}
-                    secureTextEntry
-                />
-                <TouchableOpacity onPress={handleSave} style={tw`bg-blue-500 p-4 rounded-full mt-6`}>
-                    <Text style={tw`text-white text-center font-bold`}>Speichern</Text>
-                </TouchableOpacity>
-                {message ? <Text style={tw`text-green-500 text-center mt-4`}>{message}</Text> : null}
-                {errorMessage ? <Text style={tw`text-red-500 text-center mt-4`}>{errorMessage}</Text> : null}
-            </View>
+                    <TextInput
+                        style={tw`bg-gray-300 p-4 rounded-full mb-4`}
+                        placeholder="Benutzername"
+                        value={username}
+                        onChangeText={setUsername}
+                    />
+                    <TextInput
+                        style={tw`bg-gray-300 p-4 rounded-full mb-4`}
+                        placeholder="E-Mail"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                    <TextInput
+                        style={tw`bg-gray-300 p-4 rounded-full mb-4`}
+                        placeholder="Passwort"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                    />
+                    <TextInput
+                        style={tw`bg-gray-300 p-4 rounded-full mb-4`}
+                        placeholder="Neues Passwort"
+                        onChangeText={newPassword}
+                        secureTextEntry
+                    />
+                    <TouchableOpacity onPress={handleSave} style={tw`bg-blue-500 p-4 rounded-full mt-6`}>
+                        <Text style={tw`text-white text-center font-bold`}>Speichern</Text>
+                    </TouchableOpacity>
+                    {message ? <Text style={tw`text-green-500 text-center mt-4`}>{message}</Text> : null}
+                    {errorMessage ? <Text style={tw`text-red-500 text-center mt-4`}>{errorMessage}</Text> : null}
+                </View>
 
-            {/* Gegenstände des Nutzers */}
-            <View style={tw`p-4`}>
-                <FlatList
-                    data={items}
-                    keyExtractor={(item) => item.id.toString()}
-                    numColumns={2}
-                    columnWrapperStyle={tw`justify-between`}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
-                            onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
-                        >
-                            <Image
-                                source={item.image ? { uri: item.image } : defaultImage}
-                                style={tw`w-full h-32 rounded-2xl mb-2`}
-                                resizeMode="cover"
-                            />
-                            <Text style={tw`text-center`}>{item.title}</Text>
-                            <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
-                        </TouchableOpacity>
-                    )}
-                />
-            </View>
+                {/* Gegenstände des Nutzers */}
+                <View style={tw`pt-10`}>
+                    <Text style={tw`text-xl font-bold mb-4`}>Meine Gegenstände</Text>
+
+                    <FlatList
+                        data={items}
+                        keyExtractor={(item) => item.id.toString()}
+                        numColumns={2}
+                        columnWrapperStyle={tw`justify-between`}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
+                                onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+                            >
+                                <Image
+                                    source={item.image ? { uri: item.image } : defaultImage}
+                                    style={tw`w-full h-32 rounded-2xl mb-2`}
+                                    resizeMode="cover"
+                                />
+                                <Text style={tw`text-center`}>{item.title}</Text>
+                                <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+
+            </ScrollView>
+
+            {/* Bottom Navigation Bar */}
+            <BottomNavBar navigation={navigation} />
         </View>
     );
 };
