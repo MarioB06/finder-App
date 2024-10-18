@@ -26,18 +26,18 @@ class ItemController extends Controller
             'reward' => 'required|numeric',
         ]);
 
-        $tokenString = $request->query('token');
+        $tokenString = $request->query ('token');
         $token = PersonalAccessToken::findToken($tokenString);
-        $user = $token->tokenable;
+        $user = $token->tokenable;  
         $validated['user_id'] = $user->id;
-
+        
         $validated['image'] = $request->has('image') ? $validated['image'] : "";
-
+    
         $item = Item::create($validated);
-
+    
         return response()->json($item, 201);
     }
-
+    
 
     public function show($id)
     {
@@ -52,7 +52,7 @@ class ItemController extends Controller
     public function showMy(Request $request)
     {
         $user = Controller::getUserByToken($request['token']);
-
+    
         if ($user) {
             $items = Item::where('user_id', $user->id)->get();
             return response()->json($items, 200);
@@ -60,7 +60,7 @@ class ItemController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
     }
-
+    
 
     public function update(Request $request, $id)
     {

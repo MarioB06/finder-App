@@ -67,20 +67,20 @@ const Home = ({ navigation, route }) => {
 
         {/*Menu include*/}
 
-          {/* Navbar */}
-          <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
+        {/* Navbar */}
+        <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-          {/* Options Menu Modal */}
-          <OptionsMenu
-            isVisible={isOptionsMenuVisible}
-            setIsOptionsMenuVisible={setIsOptionsMenuVisible}
-            navigation={navigation}
-            logout={logout}
-          />
+        {/* Options Menu Modal */}
+        <OptionsMenu
+          isVisible={isOptionsMenuVisible}
+          setIsOptionsMenuVisible={setIsOptionsMenuVisible}
+          navigation={navigation}
+          logout={logout}
+        />
 
         {/* Suchfeld für Ort */}
         <TextInput
-          style={tw`border p-3 rounded-full text-center mb-4 bg-gray-100`}
+          style={tw`bg-gray-300 p-4 rounded-full mb-4`}
           placeholder="Ort suchen"
           value={searchLocation}
           onChangeText={(text) => {
@@ -92,12 +92,12 @@ const Home = ({ navigation, route }) => {
         {/* Liste der gefilterten Gegenstände */}
         <FlatList
           data={filteredItems}
-          keyExtractor={(item) => item.id.toString()} // Verwende `id` anstelle von `_id`
+          keyExtractor={(item) => item.id.toString()}
           numColumns={2}
           columnWrapperStyle={tw`justify-between`}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
+              style={tw`border p-2 rounded-2xl mb-4 w-[48%] h-56`}
               onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
             >
               <Image

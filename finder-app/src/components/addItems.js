@@ -92,7 +92,7 @@ const AddItem = ({ navigation }) => {
             logout={logout}
             />
 
-            <Text style={tw`text-2xl font-bold text-center my-6`}>Neuen Gegenstand eintragen</Text>
+            <Text style={tw`text-2xl font-bold text-center my-6`}>Gegenstand eintragen</Text>
 
             {/* Rückmeldungen */}
             {errorMessage && <Text style={tw`text-red-500 text-center mb-4`}>{errorMessage}</Text>}

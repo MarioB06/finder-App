@@ -106,6 +106,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Falsches Passwort.'], 422);
         }
 
+        // Benutzerinformationen aktualisieren
         $user->name = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->newPassword);
@@ -115,25 +116,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Profil erfolgreich aktualisiert'], 200);
     }
 
-    public function getUserID(Request $request)
-    {
-        $tokenString = $request->query('token');
-        $token = PersonalAccessToken::findToken($tokenString);
-        $user = $token->tokenable;
-        
-        return response()->json(['userID' => $user->id], 200);
 
-    }
-
-    // public function getUserID(Request $request)
-    // {
-    //     $tokenString = $request->query('token');
-    //     $token = PersonalAccessToken::findToken($tokenString);
-    //     $user = $token->tokenable;
-        
-    //     return response()->json(['userID' => $user->id], 200);
-
-    // }
 
 
 

@@ -1,10 +1,11 @@
 // template
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Modal, Pressable, Switch, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { SvgXml } from 'react-native-svg';
 import { FlatList, Image } from 'react-native';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

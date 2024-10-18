@@ -29,7 +29,6 @@ Route::middleware('check.api.token')->group(function () {
 
     Route::get('/getUserInfo', [AuthController::class, 'getUserInfo']);
     Route::post('/changeUserInfo', [AuthController::class, 'changeUserInfo']);
-    Route::get('/getUserId', [AuthController::class, 'getUserID']);
 
     Route::get('/notification-settings', [NotificationSettingController::class, 'getNotificationSettings']);
     Route::post('/notification-settings', [NotificationSettingController::class, 'updateNotificationSettings']);
