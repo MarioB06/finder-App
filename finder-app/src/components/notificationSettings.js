@@ -103,7 +103,7 @@ const NotificationSettings = ({ navigation, route }) => {
                 {/* Main Content */}
                 <ScrollView style={tw`flex-1 p-4`} showsVerticalScrollIndicator={false}>
 
-                    <Text style={tw`text-2xl font-bold mb-6`}>Benachrichtigungen</Text>
+                    <Text style={tw`text-xl font-bold mb-4`}>Benachrichtigungen</Text>
                     <View style={tw`mb-4`}>
                         <Text style={tw`text-lg mb-2`}>E-Mail</Text>
                         <Switch
@@ -122,7 +122,9 @@ const NotificationSettings = ({ navigation, route }) => {
                             disabled={isSaving}
                         />
                     </View>
-                    <Text style={tw`text-2xl font-bold mt-8 mb-6`}>Benachrichtigungstypen</Text>
+
+
+                    <Text style={tw`text-xl font-bold mb-4 mt-10`}>Benachrichtigungstypen</Text>
                     <View style={tw`mb-4`}>
                         <Text style={tw`text-lg mb-2`}>Gefundene Gegenstände</Text>
                         <Switch

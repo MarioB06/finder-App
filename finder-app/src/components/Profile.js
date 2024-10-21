@@ -135,27 +135,29 @@ const Profile = ({ navigation }) => {
                 <View style={tw`pt-10`}>
                     <Text style={tw`text-xl font-bold mb-4`}>Meine Gegenstände</Text>
 
-                    <FlatList
-                        data={items}
-                        keyExtractor={(item) => item.id.toString()}
-                        numColumns={2}
-                        columnWrapperStyle={tw`justify-between`}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
-                                onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
-                            >
-                                <Image
-                                    source={item.image ? { uri: item.image } : defaultImage}
-                                    style={tw`w-full h-32 rounded-2xl mb-2`}
-                                    resizeMode="cover"
-                                />
-                                <Text style={tw`text-center`}>{item.title}</Text>
-                                <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
+                    {items.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={tw`border p-3 rounded-2xl mb-4 w-[48%] h-56`}
+                            onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+                        >
+                            <Image
+                                source={item.image ? { uri: item.image } : defaultImage}
+                                style={tw`w-full h-32 rounded-2xl mb-2`}
+                                resizeMode="cover"
+                            />
+                            <Text style={tw`text-center`}>{item.title}</Text>
+                            <Text style={tw`text-center font-bold`}>{item.reward} CHF</Text>
+                        </TouchableOpacity>
+                    ))}
                 </View>
+
+                <View style={tw`pt-10`}>
+                    <TouchableOpacity onPress={() => logout(navigation)} style={tw`bg-red-500 p-4 rounded-full mt-10 mb-10`}>
+                        <Text style={tw`text-white text-center font-bold`}>Abmelden</Text>
+                    </TouchableOpacity>
+                </View>
+
 
             </ScrollView>
 

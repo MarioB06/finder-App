@@ -83,4 +83,6 @@ class ItemController extends Controller
             return response()->json(['error' => 'Item not found'], 404);
         }
     }
+
 }
+

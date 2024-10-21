@@ -80,6 +80,7 @@ const Home = ({ navigation, route }) => {
 
       {/* Liste der gefilterten Gegenstände */}
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={filteredItems}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}

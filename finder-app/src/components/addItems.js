@@ -42,52 +42,41 @@ const AddItem = ({ navigation }) => {
     }, []);
 
     const handleSaveItem = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            console.log(token);
 
-            const response = await axios.post(
-                `${API_BASE_URL}/api/items`,
-                {
-                    title,
-                    description,
-                    location,
-                    locationDescription,
-                    reward,
-                },
-                {
-                    params: { token: token },
-                }
-            );
-            if (response.status === 201) {
-                setSuccessMessage('Gegenstand erfolgreich gespeichert.');
-                setTimeout(() => {
-                    navigation.navigate('Home', { refresh: true });
-                }, 1500);
-            }
-        } catch (error) {
-            if (error.response.status === 422) {
-                const validationErrors = error.response.data.errors;
-                console.log(validationErrors);
-                setErrorMessage("Alle Felder bitte ausfüllen");
-            } else {
-                console.log(error.response?.data?.message || 'Fehler beim Speichern des Gegenstands.');
-                setErrorMessage('Fehler beim Speichern des Gegenstands. Bitte versuchen Sie es erneut.');
-            }
-            console.error('Fehler beim Speichern des Gegenstands', error);
+        if (!title || !description || !location || !locationDescription || !reward) {
+            setErrorMessage('Bitte fülle alle Felder aus.');
+            return;
         }
+
+        if (parseFloat(reward) < 0.5) {
+            setErrorMessage('Der Finderlohn muss mindestens 0.50 CHF betragen.');
+            return;
+        }
+
+        const itemData = {
+            title,
+            description,
+            location,
+            locationDescription,
+            reward,
+        };
+
+        setErrorMessage(null);  // Entferne Fehlermeldung, falls zuvor angezeigt
+        navigation.navigate('PaymentPage', { itemData });
     };
+
 
     return (
         <View style={[tw`flex-1 p-4 relative`]}>
-            {/*Menu include*/}
 
             {/* Navbar */}
             <Navbar navigation={navigation} setIsOptionsMenuVisible={setIsOptionsMenuVisible} magnifyingGlassSvg={magnifyingGlassSvg} />
 
-            <Text style={tw`text-2xl font-bold text-center my-6`}>Gegenstand eintragen</Text>
 
             <ScrollView style={tw`flex-1 p-4`} showsVerticalScrollIndicator={false}>
+
+                <Text style={tw`text-xl font-bold mb-4`}>Gegenstand eintragen</Text>
+
                 {/* Rückmeldungen */}
                 {errorMessage && <Text style={tw`text-red-500 text-center mb-4`}>{errorMessage}</Text>}
                 {successMessage && <Text style={tw`text-green-500 text-center mb-4`}>{successMessage}</Text>}
@@ -125,7 +114,7 @@ const AddItem = ({ navigation }) => {
                 />
                 <TextInput
                     style={tw`bg-gray-300 p-4 rounded-full mb-4`}
-                    placeholder="Finderlohn"
+                    placeholder="Finderlohn ( min 0.50 CHF )"
                     value={reward}
                     onChangeText={setReward}
                 />
